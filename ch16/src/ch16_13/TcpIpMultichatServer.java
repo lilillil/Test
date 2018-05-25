@@ -81,7 +81,9 @@ public class TcpIpMultichatServer {
 				}
 			} catch (IOException e) {
 				//ignore
+				e.printStackTrace();
 			} finally {
+				System.out.println("in="+in);
 				sendToAll("#"+name+"님이 나가셨습니다.");
 				clients.remove(name);
 				System.out.println("["+socket.getInetAddress()+":"+socket.getPort()+"]"+"에서 접속을 종료하였습니다.");
