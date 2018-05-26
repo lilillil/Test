@@ -145,7 +145,7 @@ class Bingo extends Frame{
 			try {
 				out.writeUTF("300|" + str);
 				//@180526
-				turnCheck();
+				//turnCheck();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -263,14 +263,15 @@ class Bingo extends Frame{
 
 	}
 	//@180526
-	public void turnCheck() {
-		if(turn == true) {
-			turn = false;
-			setEnabled(false);
-		}else {
-			turn = true;
-			setEnabled(true);
-		}
+	public void turnCheck(boolean turn) {
+//		if(turn == true) {
+//			turn = false;
+//			setEnabled(false);
+//		}else {
+//			turn = true;
+//			setEnabled(true);
+//		}
+		setEnabled(turn);
 	}
 
 }

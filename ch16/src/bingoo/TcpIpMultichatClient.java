@@ -95,7 +95,9 @@ public class TcpIpMultichatClient {
 						System.out.println("서버에 연결되었습니다.");
 						//textfield name받게 수정
 						Thread sender   = new Thread(new ClientSender(socket, name));
-						Thread receiver = new Thread(new ClientReceiver(socket));
+						//@180526
+//						Thread receiver = new Thread(new ClientReceiver(socket));
+						Thread receiver = new Thread(new ClientReceiver(socket,name));
 
 						sender.start();
 						receiver.start();
@@ -168,14 +170,23 @@ public class TcpIpMultichatClient {
 		Socket socket;
 
 		DataInputStream in;
-
-		ClientReceiver(Socket socket) {
+		//@180526
+		String name;
+		ClientReceiver(Socket socket, String name) {
 			this.socket = socket;
+			this.name = name;
 			try {
 				in = new DataInputStream(socket.getInputStream());
 			} catch (IOException e) {
 			}
 		}
+//		ClientReceiver(Socket socket) {
+//			this.socket = socket;
+//			try {
+//				in = new DataInputStream(socket.getInputStream());
+//			} catch (IOException e) {
+//			}
+//		}
 
 		//@180526
 		boolean boss = false;
@@ -211,12 +222,19 @@ public class TcpIpMultichatClient {
 							win = new Bingo("Bingo Game Ver1.0", socket);
 						b.setEnabled(false);
 						//@180526
-						if (boss = true)
+						if (boss)
 							win.turn = true;
 						System.out.println("win.turn"+win.turn);
 						break;
 					case "300":
 						win.bingoCheck(msgs[1]);
+						if(name.equals(msgs[2])) {//누른사람과 이름이 같으면 턴 false ->빙고판 disable
+							win.turnCheck(false);
+						}else {
+							win.turnCheck(true);
+						}
+						System.out.println("msg2"+msgs[2]);
+						System.out.println("누른사람:"+ name);
 						break;
 					case "400":
 						if(msgs[1].equals("게임종료")) {

@@ -94,7 +94,10 @@ public class TcpIpMultichatServer {
 							sendToAll("1|게임시작");
 							break;
 						default :
-							sendToAll(msg);
+							//@180526
+							//sendToAll(msg);
+							sendToAll(msg + "|"+name);
+							System.out.println(name);
 							break;
 
 						}
