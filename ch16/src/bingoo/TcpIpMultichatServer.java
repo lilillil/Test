@@ -1,4 +1,4 @@
-package bingo;
+package bingoo;
 
 import java.net.*;
 import java.io.*;

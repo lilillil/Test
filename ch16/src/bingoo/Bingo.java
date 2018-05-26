@@ -1,4 +1,4 @@
-package bingo;
+package bingoo;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -20,12 +20,14 @@ class Bingo extends Frame{
 	Button[] btnArr = null;
 	boolean[][] bArr = new boolean[SIZE][SIZE]; // 빙고판 체크여부 확인을 위한 배열
 	boolean isBingo = false;
-
+	boolean click=true;
 	// 빙고판 버튼에 사용할 문자열, 빙고판의 크기에 따라 이들의 일부만 사용될 수 있다.
 	String[] values = { "글쎄", "기로로", "김창우", "김천대표", "까꿍", "남궁성", "낭군이", "넓게보기", "네라주리", "다밀", "더클레오", "들개", "디벨로", "레몬",
 			"루션", "루이지노", "무색이", "문학청년", "사천사", "상상", "세피룸", "스쿨쥐", "쌩", "쏭양", "씨드", "양수호", "에노야", "에비츄", "에이스", "엔즈",
 			"오이날다", "오케클릭", "용주니", "우기파파", "잠탱이", "제러스", "조땜", "지냔", "카라", "캉스", "태연", "파티쉐", "페르소마", "폭풍", "핏빛노을",
 			"핑크팬더", "하늘이", "하루", "한경훈", "헐레벌떡", "화염병", "흑빛" };
+	//@180526
+	boolean turn = false;
 
 
 	DataOutputStream out;
@@ -129,13 +131,21 @@ class Bingo extends Frame{
 			Button btn = (Button) ae.getSource();
 
 			String str = ae.getActionCommand();
-
-		
+			
+			click = false;
 			btn.setEnabled(false);
+			
+//			for (int i = 0; i < SIZE * SIZE; i++) {
+//				btnArr[i].setEnabled(false);
+//			}		
+			
+			
 			
 			// 2. 눌러진 버튼을 전송한다
 			try {
 				out.writeUTF("300|" + str);
+				//@180526
+				turnCheck();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -221,11 +231,6 @@ class Bingo extends Frame{
 			info.setLayout(new FlowLayout());
 			Label msg = new Label("빙고를 누르면 이김", Label.CENTER);
 			Button ok = new Button("빙고");
-		
-			
-
-			
-			
 			
 			ok.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) { // OK . 버튼을 누르면 수행됨
@@ -256,6 +261,16 @@ class Bingo extends Frame{
 		}
 		
 
+	}
+	//@180526
+	public void turnCheck() {
+		if(turn == true) {
+			turn = false;
+			setEnabled(false);
+		}else {
+			turn = true;
+			setEnabled(true);
+		}
 	}
 
 }

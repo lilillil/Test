@@ -1,7 +1,8 @@
-package bingo;
+package bingoo;
 
 import java.awt.Button;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Label;
 import java.awt.TextField;
@@ -18,6 +19,7 @@ public class TcpIpMultichatClient {
 	static DataOutputStream out;
 	static Label stlb = new Label();
 	static Button b = new Button("시 작");
+	static Button exit = new Button("나가기");
 	static Socket socket;
 	static Bingo win = null;
 
@@ -55,20 +57,30 @@ public class TcpIpMultichatClient {
 					
 					String name = nametxt.getText();
 
-
-					Frame f = new Frame("Login");
+					
+					Frame f = new Frame("BinGo Game~");
 					f.setSize(400, 400);
 					f.setLayout(null); // . 레이아웃 매니저의 설정을 해제한다
+					
+					Font font = new Font("Serif", Font.ITALIC, 40) ;
 
+
+						
+					Label title = new Label();
+					title.setBounds(120, 70, 200, 150); 
+					title.setText("빙고게임");
+					title.setFont(font);
+					f.add(title);
 
 					b.setSize(100, 50); // Button . 의 크기를 설정한다
-					b.setLocation(150, 150); // Frame Button . 내에서의 의 위치를 설정한다
+					b.setLocation(70, 280); // Frame Button . 내에서의 의 위치를 설정한다
 					f.add(b);
-							
+					exit.setSize(100, 50); // Button . 의 크기를 설정한다
+					exit.setLocation(230, 280); // Frame Button . 내에서의 의 위치를 설정한다
+					f.add(exit);	
 
 
-					stlb.setLocation(100,150);
-					stlb.setBounds(100, 50, 100, 100); 
+					stlb.setBounds(75, 50, 100, 430); 
 					stlb.setText("0");
 
 					f.add(stlb);
@@ -78,8 +90,8 @@ public class TcpIpMultichatClient {
 				
 					try {
 			            // 소켓을 생성하여 연결을 요청한다.
-						socket = new Socket("10.10.10.141", 7777);
-//						socket = new Socket("127.0.0.1", 7777);
+//						socket = new Socket("10.10.10.141", 7777);
+						socket = new Socket("127.0.0.1", 7777);
 						System.out.println("서버에 연결되었습니다.");
 						//textfield name받게 수정
 						Thread sender   = new Thread(new ClientSender(socket, name));
@@ -116,6 +128,12 @@ public class TcpIpMultichatClient {
 				}
 			}
 		});
+		
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 	}
 
 	static class ClientSender extends Thread {
@@ -142,8 +160,7 @@ public class TcpIpMultichatClient {
 				while (out != null) {
 					out.writeUTF("[" + name + "]" + scanner.nextLine());
 				}
-			} catch (IOException e) {
-			}
+			} catch (IOException e) {}
 		} // run()
 	} // ClientSender
 
@@ -160,6 +177,9 @@ public class TcpIpMultichatClient {
 			}
 		}
 
+		//@180526
+		boolean boss = false;
+		
 		public void run() {
 			// System.out.println("클라"+in);
 			while (in != null) {
@@ -176,10 +196,23 @@ public class TcpIpMultichatClient {
 
 					case "100":
 						stlb.setText("대기자 = " + msgs[1]);
+						//@180526
+						System.out.println(msgs[1]);
+						if(msgs[1].equals("1")) {
+							boss = true;
+							System.out.println("보스1:"+ boss);
+						}else {
+							boss = false;
+							System.out.println("보스2:"+ boss);
+						}
 						break;
 					case "1":
 						if (win == null)
 							win = new Bingo("Bingo Game Ver1.0", socket);
+						//@180526
+						if (boss = true)
+							win.turn = true;
+						System.out.println("win.turn"+win.turn);
 						b.setEnabled(false);
 						break;
 					case "300":
