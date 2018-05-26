@@ -102,7 +102,10 @@ public class TcpIpMultichatClient {
 						sender.start();
 						receiver.start();
 					} catch(ConnectException ce) {
-						ce.printStackTrace();
+						//@180526
+						//ce.printStackTrace();
+						System.out.println("서버접속실패");
+						System.exit(0);
 					} catch(Exception e) {}
 					
 					
@@ -212,7 +215,7 @@ public class TcpIpMultichatClient {
 						b.setEnabled(false);
 						
 						//@180526
-						if(name.equals(msgs[2])) {//시작 버튼 누른사람과 이름이 같으면 턴 true ->빙고판 setEnable
+						if(name.equals(msgs[2])) {//먼저 시작 버튼 누른사람이 1빠
 							win.turnCheck(true);
 						}else {
 							win.turnCheck(false);
