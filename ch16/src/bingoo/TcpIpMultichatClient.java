@@ -209,11 +209,11 @@ public class TcpIpMultichatClient {
 					case "1":
 						if (win == null)
 							win = new Bingo("Bingo Game Ver1.0", socket);
+						b.setEnabled(false);
 						//@180526
 						if (boss = true)
 							win.turn = true;
 						System.out.println("win.turn"+win.turn);
-						b.setEnabled(false);
 						break;
 					case "300":
 						win.bingoCheck(msgs[1]);
