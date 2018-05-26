@@ -222,11 +222,14 @@ public class TcpIpMultichatClient {
 						}
 						break;
 					case "300":
-						win.bingoCheck(msgs[1]);
+						//@180526
+						//win.bingoCheck(msgs[1]);
 						//@180526
 						if(name.equals(msgs[2])) {//빙고판 버튼 누른사람과 이름이 같으면 턴 false ->빙고판 disable
+							win.bingoCheck(msgs[1], true);//컬러 본인꺼 true(red)
 							win.turnCheck(false);
 						}else {
+							win.bingoCheck(msgs[1], false);//컬러 남의꺼 true(green)
 							win.turnCheck(true);
 						}
 						break;

@@ -188,8 +188,9 @@ class Bingo extends Frame{
 			} catch (IOException e) {}
 		}
 	}
-
-	public void bingoCheck(String bingo) {
+	//@180526
+	//public void bingoCheck(String bingo) {
+	public void bingoCheck(String bingo, boolean color) {	
 		
 		
 		Button tmp = null;
@@ -205,7 +206,14 @@ class Bingo extends Frame{
 		}	
 		
 		try {
-			tmp.setBackground(Color.RED);
+			
+			//@180526
+			//tmp.setBackground(Color.RED);
+			if(color == true) {
+				tmp.setBackground(Color.RED);
+			}else {
+				tmp.setBackground(Color.GREEN);
+			}
 			tmp.setEnabled(false);
 		}catch (Exception e) {
 			// TODO: handle exception
