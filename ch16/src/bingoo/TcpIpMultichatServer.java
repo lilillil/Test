@@ -95,6 +95,9 @@ public class TcpIpMultichatServer {
 							//sendToAll("1|게임시작");
 							sendToAll("1|게임시작"+"|"+name);
 							break;
+						//@18526
+						case "999":
+							return;
 						default :
 							//@180526
 							//sendToAll(msg);

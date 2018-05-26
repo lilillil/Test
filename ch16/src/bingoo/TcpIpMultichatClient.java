@@ -136,6 +136,14 @@ public class TcpIpMultichatClient {
 		
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//@180526
+				try {
+					out.writeUTF("999|³ª°¡±â");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				System.exit(0);
 			}
 		});
