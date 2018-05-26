@@ -188,8 +188,6 @@ public class TcpIpMultichatClient {
 //			}
 //		}
 
-		//@180526
-		boolean boss = false;
 		
 		public void run() {
 			// System.out.println("클라"+in);
@@ -207,34 +205,27 @@ public class TcpIpMultichatClient {
 
 					case "100":
 						stlb.setText("대기자 = " + msgs[1]);
-						//@180526
-						System.out.println(msgs[1]);
-						if(msgs[1].equals("1")) {
-							boss = true;
-							System.out.println("보스1:"+ boss);
-						}else {
-							boss = false;
-							System.out.println("보스2:"+ boss);
-						}
 						break;
 					case "1":
 						if (win == null)
 							win = new Bingo("Bingo Game Ver1.0", socket);
 						b.setEnabled(false);
+						
 						//@180526
-						if (boss)
-							win.turn = true;
-						System.out.println("win.turn"+win.turn);
+						if(name.equals(msgs[2])) {//시작 버튼 누른사람과 이름이 같으면 턴 true ->빙고판 setEnable
+							win.turnCheck(true);
+						}else {
+							win.turnCheck(false);
+						}
 						break;
 					case "300":
 						win.bingoCheck(msgs[1]);
-						if(name.equals(msgs[2])) {//누른사람과 이름이 같으면 턴 false ->빙고판 disable
+						//@180526
+						if(name.equals(msgs[2])) {//빙고판 버튼 누른사람과 이름이 같으면 턴 false ->빙고판 disable
 							win.turnCheck(false);
 						}else {
 							win.turnCheck(true);
 						}
-						System.out.println("msg2"+msgs[2]);
-						System.out.println("누른사람:"+ name);
 						break;
 					case "400":
 						if(msgs[1].equals("게임종료")) {

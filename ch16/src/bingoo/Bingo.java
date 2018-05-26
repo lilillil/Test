@@ -26,9 +26,6 @@ class Bingo extends Frame{
 			"루션", "루이지노", "무색이", "문학청년", "사천사", "상상", "세피룸", "스쿨쥐", "쌩", "쏭양", "씨드", "양수호", "에노야", "에비츄", "에이스", "엔즈",
 			"오이날다", "오케클릭", "용주니", "우기파파", "잠탱이", "제러스", "조땜", "지냔", "카라", "캉스", "태연", "파티쉐", "페르소마", "폭풍", "핏빛노을",
 			"핑크팬더", "하늘이", "하루", "한경훈", "헐레벌떡", "화염병", "흑빛" };
-	//@180526
-	boolean turn = false;
-
 
 	DataOutputStream out;
 
@@ -144,8 +141,6 @@ class Bingo extends Frame{
 			// 2. 눌러진 버튼을 전송한다
 			try {
 				out.writeUTF("300|" + str);
-				//@180526
-				//turnCheck();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -264,13 +259,6 @@ class Bingo extends Frame{
 	}
 	//@180526
 	public void turnCheck(boolean turn) {
-//		if(turn == true) {
-//			turn = false;
-//			setEnabled(false);
-//		}else {
-//			turn = true;
-//			setEnabled(true);
-//		}
 		setEnabled(turn);
 	}
 
