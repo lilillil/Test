@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    /* 초기 로딩시 카드 오픈 상태이므로 클릭했을때 뒤집기 안되게 함 */
+    img{
+        pointer-events: none;
+    }
+    </style>
+</head>
+<body>
+    <div style="padding-bottom:10px;">
+        <button>뒤집기</button>
+        <button>감추기</button>
+        <button>보이기</button>
+        <button>섞기</button>
+    </div>
+    <div class="container" style="width:1350px;">
+
+    </div>
+  
+
+    <script>
+    var saveImgSrc = new Array(52);
+    var cardNumber = [];
+    var selectedCardOrderArr = [];
+    var cardColorVal = [];
+    
+    window.onload = function(){
+        //카드처음에 순서대로 뿌려주기
+        var cardOrder = 0;//카드 화면에 보여지는 순서대로 0~51까지 id값에 넘버링
+        var value;//빨간 카드는 value = 1, 검은 카드는 value = 2
+        for(var i = 1; i <= 4; i++){
+            if(i==1 || i==3){
+                value = 1;
+            } else {
+                value = 2;
+            }
+            for(var j = 1; j <=13; j++){
+                document.body.querySelector('div.container').innerHTML += '<img src="cardImg\\'+i+'_'+j+'.png" alt="" value="'+ value +'" id="'+cardOrder+'" class="unlock" onclick=show(this)>';
+                cardOrder++;
+            }
+        }
+        
+        var btns = document.querySelectorAll('button');
+        var imgs = document.querySelectorAll('img');
+        var onOff = true;//오픈상태
+        
+        //카드크기설정
+        for(i=0;i<imgs.length;i++) {
+            imgs[i].style.width  = '100px';
+            imgs[i].style.height = '146px';
+        }
+        //현재 카드 이미지 주소를 배열에 저장
+        for(i=0; i<imgs.length; i++){
+            saveImgSrc[i] = imgs[i].getAttribute('src');
+        }
+
+        //전체카드뒤집기
+        btns[0].onclick = function() {
+
+            if(onOff){//오픈상태이면 뒤집기
+                for(i=0; i<imgs.length;i++){
+                    imgs[i].src = "cardImg\\playing-card-back-side.jpg";
+                    imgs[i].style.pointerEvents = 'initial'; //카드 클릭 가능하게하기
+                    imgs[i].setAttribute("onclick", "show(this);");//onclick이벤트 초기화
+                    imgs[i].setAttribute("value", "0");//뒤집힌 상태면 color value값 0
+                }
+                onOff = false;
+            } else {//뒤집힌 상태이면 오픈하기
+                for(i=0; i<imgs.length; i++){
+                    imgs[i].src =  saveImgSrc[i] ;
+                    imgs[i].style.pointerEvents = 'none'; //오픈 상태에서는 카드 클릭 못하게 하기
+                    imgs[i].setAttribute("onclick", "show(this);");//onclick이벤트 초기화
+                    //value값 계산해서 넣어주기
+                    // var tmp = imgs[i].src.split("cardImg/");
+                    // var val = tmp[1].substring(0,1);
+                    // if(val==1 || val==3){
+                    //     imgs[i].setAttribute("value", "1");
+                    // } else {
+                    //     imgs[i].setAttribute("value", "2");
+                    // }
+                }
+                onOff = true;
+            }
+            
+        }
+        //감추기
+        btns[1].onclick = function() {
+            for(i=0; i<imgs.length;i++){
+                imgs[i].style.display = 'none';
+            }
+        }
+        //보이기
+        btns[2].onclick = function() {
+            for(i=0; i<imgs.length;i++){
+                imgs[i].style.display = 'initial';
+            }
+        }
+        //섞기
+        btns[3].onclick = function() {
+            if(onOff == false){
+                saveImgSrc.sort(function(a,b){return Math.random()*52})
+            } else {
+                saveImgSrc.sort(function(a,b){return Math.random()*52})
+                for(i=0; i<imgs.length; i++){
+                    imgs[i].src =  saveImgSrc[i] ;
+                }
+            }
+        }
+    }
+    //카드 한 장씩 뒤집기
+    function show(selectedCard){
+        
+        if(selectedCardOrderArr.length == 2){
+            cardNumber = [];//초기화
+		    selectedCardOrderArr = [];//초기화
+		    cardColorVal = [];//초기화
+        }
+        
+        
+        var selectedCardOrder = selectedCard.getAttribute('id');//화면에서 몇 번째 카드 선택했는지 가져옴
+        var imgs = document.querySelectorAll('img');
+
+
+
+        
+        for(i=0; i<imgs.length; i++){
+
+            if(imgs[i].getAttribute('id') == selectedCardOrder){//뒤집힌 카드의 순서(id)가 선택한 카드 순서와 같을때
+            imgs[i].src = saveImgSrc[selectedCardOrder];//이미지 바까줌
+            // document.getElementById(selectedCardOrder).setAttribute("src",saveImgSrc[selectedCardOrder]);
+
+            //몇번째 카드인지 순서 저장해놨다가 두번째 선택한 카드가 다른 카드면 순서 가져와서다시 뒷면으로 뒤집기
+            selectedCardOrderArr.push(selectedCardOrder);
+            
+            var str = imgs[i].src.substring(imgs[i].src.length - 6);//카드 넘버 짜르기
+            cardNumber.push(str);//짜른 카드 넘버 비교용 배열에 넣어줌
+
+            // var tmp = imgs[i].src.split("cardImg/");
+            // console.log(tmp);
+
+
+            //value값판단해서 넣어주기
+            var tmp = imgs[i].src.split("cardImg/");
+            var colorval = tmp[1].substring(0,1);
+            if(colorval==1 || colorval==3){
+                imgs[i].setAttribute("value", "1");
+            } else {
+                imgs[i].setAttribute("value", "2");
+            }
+
+            
+            var val = imgs[i].getAttribute('value');//색깔 값 가져오기
+            cardColorVal.push(val);//색깔 값 비교용 배열에 넣어줌
+
+            imgs[i].setAttribute("onclick", "messege();");//다시 클릭 못하게 onclick이벤트 바꿔주기
+
+            break;
+            }
+
+            
+        }
+
+        if(cardNumber.length == 2){ //카드가 2장 선택 되었을 때
+            hide(imgs);
+        }
+    }
+    
+    // function wait(msecs) {
+    //     var start = new Date().getTime();
+    //     var cur = start;
+    //     while(cur - start < msecs){
+    //         cur = new Date().getTime();
+    //     }
+    // }
+
+    function hide(imgs){
+        //숫자가 다르거나 컬러가 다르면 뒷면 카드 이미지로 바꾸기
+        if(cardNumber[0]!=cardNumber[1]||cardColorVal[0]!=cardColorVal[1]){
+
+            setTimeout(function () {
+               	for(i=0; i<selectedCardOrderArr.length; i++) {
+		            imgs[selectedCardOrderArr[i]].src = "cardImg\\playing-card-back-side.jpg";
+		            imgs[selectedCardOrderArr[i]].setAttribute("onclick", "show(this);");
+		            imgs[selectedCardOrderArr[i]].removeAttribute("onload");
+		        }
+
+            }, 500); 
+        }
+
+    }
+
+    function messege(){
+        alert("다른 카드를 선택해주세요.");
+    }
+
+    </script>
+</body>
+</html>
